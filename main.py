@@ -156,8 +156,8 @@ def Check():
             pass
         else:
             DrawRow(emptyRow, len(listRows))
-            currRow.clear()
-            hintRow.clear()
+        currRow.clear()
+        hintRow.clear()
 
     pass
 
