@@ -14,7 +14,7 @@ emptyRow = ['white', 'white', 'white', 'white']
 
 gameOver = False
 
-numAttempts = 3
+numAttempts = 5
 
 colors = ['red', 'cyan', 'purple', 'orange', 'yellow', 'green']
 
@@ -50,7 +50,7 @@ def DrawRow(thisRow, row = 0, col = 0):
         canvas1.create_rectangle(spacing * 0 + offset -5,
                                  spacing * row + offset -5,
                                  spacing * 3 + size + offset +5,
-                                 spacing * row + size + offset +5, fill='grey')
+                                 spacing * row + size + offset +5, fill='light grey')
 
     for color in thisRow:
         canvas1.create_oval(spacing * col + offset,
@@ -95,7 +95,8 @@ def AddColor(c):
 
     if len(currRow) < 4 and not gameOver:
         currRow.append(c)
-    DrawRow(currRow, len(listRows))
+    if not gameOver:
+        DrawRow(currRow, len(listRows))
 
     pass
 
