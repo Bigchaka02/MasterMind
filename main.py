@@ -10,8 +10,11 @@ listRows = []
 hintRow = []
 listHintRows = []
 solution = []
+emptyRow = ['white', 'white', 'white', 'white']
 
-numAttempts = 10
+gameOver = False
+
+numAttempts = 3
 
 colors = ['red', 'cyan', 'purple', 'orange', 'yellow', 'green']
 
@@ -23,6 +26,7 @@ colors = ['red', 'cyan', 'purple', 'orange', 'yellow', 'green']
 
 def RandSolution():
     global solution
+    solution.clear()
     for i in range(4):
         solution.append(colors[random.randint(0, len(colors) - 1)])
 
@@ -33,6 +37,8 @@ def DrawRow(thisRow, row = 0, col = 0):
     global listRows
     global hintRow
     global listHintRows
+    global numAttempts
+    global gameOver
 
     offset = 20
     size = 20
@@ -40,18 +46,28 @@ def DrawRow(thisRow, row = 0, col = 0):
 
     # draw the current row
 
+    if gameOver:
+        canvas1.create_rectangle(spacing * 0 + offset -5,
+                                 spacing * row + offset -5,
+                                 spacing * 3 + size + offset +5,
+                                 spacing * row + size + offset +5, fill='grey')
+
     for color in thisRow:
         canvas1.create_oval(spacing * col + offset,
                             spacing * row + offset,
                             spacing * col + size + offset,
                             spacing * row + size + offset, fill=color)
         col += 1
+
     pass
 
 
 # ==================================================================================================================================
 
 def DrawBoard():
+
+    canvas1.delete("all")
+
     global currRow
     global listRows
     global hintRow
@@ -64,9 +80,7 @@ def DrawBoard():
 
 
     # draw the solution... just for testing.
-    DrawRow(solution, 12)
-
-    #DrawRow(emptyRow, len(listRows)+1)
+    #DrawRow(solution, 12)
 
     pass
 
@@ -77,14 +91,11 @@ def AddColor(c):
     global listRows
     global hintRow
     global listHintRows
+    global gameOver
 
-    if len(currRow) < 4:
+    if len(currRow) < 4 and not gameOver:
         currRow.append(c)
     DrawRow(currRow, len(listRows))
-
-    print(currRow)
-
-    #DrawBoard()
 
     pass
 
@@ -95,11 +106,13 @@ def Delete():
     global listRows
     global hintRow
     global listHintRows
+    global gameOver
 
 
     #del listRows[-1]
-    currRow.clear()
-    DrawRow(emptyRow, len(listRows))
+    if not gameOver:
+        currRow.clear()
+        DrawRow(emptyRow, len(listRows))
 
     #DrawBoard()
     pass
@@ -111,10 +124,21 @@ def Reset():
     global listRows
     global hintRow
     global listHintRows
+    global gameOver
 
     currRow.clear()
+    listRows.clear()
+    hintRow.clear()
+    listHintRows.clear()
+    gameOver = False
+
 
     DrawBoard()
+
+    DrawRow(emptyRow, len(listRows))
+
+    RandSolution()
+
     pass
 
 # ==================================================================================================================================
@@ -124,6 +148,8 @@ def Check():
     global listRows
     global hintRow
     global listHintRows
+    global gameOver
+    global numAttempts
 
     if len(currRow) == 4:
         listRows.append(currRow.copy())
@@ -143,16 +169,20 @@ def Check():
 
         listHintRows.append(hintRow.copy())
 
-        print(hintRow)
-        print(listHintRows)
+        #print(hintRow)
+        #print(listHintRows)
 
         DrawBoard()
 
         if (len(hintRow)==4 and not 'pink' in hintRow):
             print("you win")
+            gameOver = True
+            DrawRow(solution, numAttempts + 2)
             pass
-        elif (len(listRows) > numAttempts):
+        elif (len(listRows) >= numAttempts):
             print('you lose')
+            gameOver = True
+            DrawRow(solution, numAttempts + 2)
             pass
         else:
             DrawRow(emptyRow, len(listRows))
@@ -212,9 +242,9 @@ frame2.pack(side=BOTTOM)
 
 RandSolution()
 
-DrawRow(solution, 12)
+#DrawRow(solution, numAttempts+2)
 
-emptyRow = ['white', 'white', 'white', 'white']
+
 
 DrawRow(emptyRow, len(listRows))
 
