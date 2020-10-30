@@ -1,3 +1,6 @@
+
+# Master Mind Game By Hadey Chaker
+
 from tkinter import *
 import random
 
