@@ -206,7 +206,10 @@ frame1 = Frame(root, bg='sky blue', bd=10)
 frame1.pack(side=TOP)
 
 canvas1 = Canvas(frame1, width=400, height=400)
-canvas1.pack()
+canvas1.pack(side=LEFT)
+
+label1 = Label(frame1, text="Hello Mr. Wagner", fg="white", bg="black", width=15, height=10)
+label1.pack(side=RIGHT)
 
 frame2 = Frame(root)
 
